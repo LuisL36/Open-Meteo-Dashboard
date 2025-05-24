@@ -1,0 +1,1 @@
+[Open-Meteo Dashboard](https://github.com/LuisL36/Open-Meteo-Dashboard)
