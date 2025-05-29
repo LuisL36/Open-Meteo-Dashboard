@@ -1,18 +1,56 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: sans-serif;
+  padding: 1rem;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1rem;
+}
+
+nav {
+  display: inline-flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+nav button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #e0e0e0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+nav button.active,
+nav button:hover {
+  background: #c0c0c0;
+}
+
 #weather {
   max-width: 400px;
-  margin: 2rem auto;
+  margin: 0 auto;
   padding: 1.5rem;
   background: #f0f8ff;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  text-align: center;
+  text-align: left;
 }
 
 #weather h2 {
   margin-bottom: 1rem;
 }
 
-#weather p {
-  margin: 0.5rem 0;
-  font-size: 1.1rem;
+#weather .card {
+  margin-bottom: 1rem;
 }
+
+#weather p {
+  margin: 0.3rem 0;
+  font-size: 1rem;
+}
+
+

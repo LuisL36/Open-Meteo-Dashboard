@@ -1,38 +1,77 @@
-fetch(
-  'https://api.open-meteo.com/v1/forecast' +
+//*
+const API_BASE = 'https://api.open-meteo.com/v1/forecast' +
   '?latitude=40.71&longitude=-74.01' +
   '&hourly=temperature_2m,precipitation_probability' +
-  '&timezone=America%2FNew_York'
-)
-  .then(res => {
-    if (!res.ok) throw new Error(`API error: ${res.status}`);
-    return res.json();
-  })
-  .then(data => {
-    
-    const now = new Date();
-    const hourString = now.toISOString().slice(0,13) + ':00'; 
-      
+  '&timezone=America%2FNew_York';
 
-    
-    const times = data.hourly.time;
-    let idx = times.indexOf(hourString);
-    if (idx === -1) idx = 0;  
+const btnTemp   = document.getElementById('btn-temp');
+const btnPrecip = document.getElementById('btn-precip');
+const weatherEl = document.getElementById('weather');
 
-    // data points
-    const temp = data.hourly.temperature_2m[idx];
-    const precip = data.hourly.precipitation_probability[idx];
+// generic fetch + clear
+async function fetchAndRender(renderFn) {
+  weatherEl.innerHTML = '<p>Loading…</p>';
+  try {
+    const res  = await fetch(API_BASE);
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    const data = await res.json();
+    weatherEl.innerHTML = '';              // clear loader
+    renderFn(data);
+  } catch (err) {
+    weatherEl.innerHTML = '<p>Sorry, data unavailable.</p>';
+    console.error(err);
+  }
+}
 
-    // Render in page
-    const weatherDiv = document.getElementById('weather');
-    weatherDiv.innerHTML = `
-      <h2>Current Weather</h2>
-      <p><strong>Temperature:</strong> ${temp}°C</p>
-      <p><strong>Precipitation Probability:</strong> ${precip}%</p>
-    `;
-  })
-  .catch(err => {
-    console.error('Fetch error:', err);
-    document.getElementById('weather').innerText =
-      'Sorry, weather data unavailable.';
-  });
+// pick out the current hour index
+function getCurrentIndex(times) {
+  const now = new Date();
+  const hourString = now.toISOString().slice(0,13) + ':00';
+  const idx = times.indexOf(hourString);
+  return idx > -1 ? idx : 0;
+}
+
+// renderer for temperature
+function renderTemperature(data) {
+  const times = data.hourly.time;
+  const idx   = getCurrentIndex(times);
+  const temp  = data.hourly.temperature_2m[idx];
+  weatherEl.innerHTML = `
+    <h2>Temperature Right Now</h2>
+    <div class="card">
+      <p><strong>Time:</strong> ${times[idx].replace('T',' ')}</p>
+      <p><strong>Temp:</strong> ${temp}°C</p>
+    </div>
+  `;
+}
+
+// renderer for precipitation
+function renderPrecipitation(data) {
+  const times  = data.hourly.time;
+  const idx    = getCurrentIndex(times);
+  const precip = data.hourly.precipitation_probability[idx];
+  weatherEl.innerHTML = `
+    <h2>Precipitation Right Now</h2>
+    <div class="card">
+      <p><strong>Time:</strong> ${times[idx].replace('T',' ')}</p>
+      <p><strong>Chance:</strong> ${precip}%</p>
+    </div>
+  `;
+}
+
+// nav handlers
+btnTemp.addEventListener('click', () => {
+  btnTemp.classList.add('active');
+  btnPrecip.classList.remove('active');
+  fetchAndRender(renderTemperature);
+});
+
+btnPrecip.addEventListener('click', () => {
+  btnPrecip.classList.add('active');
+  btnTemp.classList.remove('active');
+  fetchAndRender(renderPrecipitation);
+});
+
+// initial load
+fetchAndRender(renderTemperature);
+
