@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open-Meteo Dashboard</title>
-    <link rel="stylesheet" href="css/index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Open-Meteo Dashboard</title>
+  <link rel="stylesheet" href="css/index.css" />
 </head>
 <body>
-    <h1>Weather Dashboard</h1>
-    <div id="weather"></div>
-    <script src="js/index.js"></script>
+  <h1>Weather Dashboard</h1>
+
+  <nav>
+    <button id="btn-temp" class="active">Temperature</button>
+    <button id="btn-precip">Precipitation</button>
+  </nav>
+
+  <main>
+    <section id="weather">
+      <!-- assembled by JS -->
+    </section>
+  </main>
+
+  <script src="js/index.js"></script>
 </body>
 </html>
+
