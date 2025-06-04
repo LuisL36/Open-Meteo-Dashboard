@@ -4,6 +4,7 @@ body {
   font-family: sans-serif;
   padding: 1rem;
   text-align: center;
+  background: #89adce
 }
 
 h1 {
@@ -19,7 +20,7 @@ nav {
 nav button {
   padding: 0.5rem 1rem;
   border: none;
-  background: #e0e0e0;
+  background: #dcf2ff;
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s;
@@ -27,7 +28,7 @@ nav button {
 
 nav button.active,
 nav button:hover {
-  background: #c0c0c0;
+  background: hsl(0, 0%, 75%);
 }
 
 #weather {
